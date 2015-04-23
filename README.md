@@ -63,7 +63,7 @@ When developing software as an organization, the value of the software produced 
 **[top](#table-of-contents)**
 
 ## Indentation
-  - The unit of indentation is four spaces. 
+  - The unit of indentation is two spaces. 
   - **Never use tabs**, as this can lead to trouble when opening files in different IDEs/Text editors. Most text editors have a configuration option to change tabs to spaces.
 
 **[top](#table-of-contents)**
