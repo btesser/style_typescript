@@ -50,14 +50,14 @@ When developing software as an organization, the value of the software produced 
 **[top](#table-of-contents)**
 
 ## Browser Compatibility
-  - Target modern browsers `ie >= 9`
+  - Target latest chrome
 
 **[top](#table-of-contents)**
 
 ## Files
   - All TypeScript files must have a ".ts" extension.
   - They should be all lower case, and only include letters, numbers, and periods. 
-  - It is OK (even recommended) to separate words with periods (e.g. `my.view.html`).
+  - Separate words with dashes (e.g. `my-view.html`).
   - All files should end in a new line. This is necessary for some Unix systems.
 
 **[top](#table-of-contents)**
@@ -69,13 +69,13 @@ When developing software as an organization, the value of the software produced 
 **[top](#table-of-contents)**
 
 ## Line Length
-  - Lines must not be longer than 140 characters. 
-  - When a statement runs over 140 characters on a line, it should be broken up, ideally after a comma or operator.
+  - Lines must not be longer than 120 characters. 
+  - When a statement runs over 120 characters on a line, it should be broken up, ideally after a comma or operator.
 
 **[top](#table-of-contents)**
 
 ## Quotes
-  - Use single-quotes `''` for all strings, and use double-quotes `""` for strings within strings.
+  - Use single-quotes `''` for all strings, and use double-quotes `""` for strings within strings, unless a single quote is needed (for example as part of a message ```'the boy\'s bag'```) 
 
   ```typescript
   // bad
@@ -125,11 +125,11 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
 
 ### Class
 
-  - All classes must have block comments `/**...*/` for all public variables and functions. 
+  - It is preferable for all classes (necessary for utilities and services) to have block comments `/**...*/` for all public variables and functions. 
   - All public functions should use [JSDoc](http://usejsdoc.org/) style comments. 
-  - Functions need to have a comment explaining what the function does, and all of the input parameters need to be annotated with `@param`. 
+  - Functions need to have a comment explaining what the function does, and all of the input parameters need to be annotated with `@param`, and the return value needs to be described and annotated with `@returns`
   - The class should include a block comment containing the description of the class
-  - The constructor should contain a JSDoc comment annotating any input parameters.
+  - The constructor should contain a JSDoc comment annotating any input parameters only if those parameters are not angular injectables.
 
   ```typescript
   /**
@@ -207,18 +207,17 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
 
 **[top](#table-of-contents)**
 
-### Todo and XXX
+### @todo and @bug
 
-`TODO` and `XXX` annotations help you quickly find things that need to be fixed/implemented. 
+`@todo` and `@bug` annotations help you quickly find things that need to be fixed/implemented. 
 
-  - Use `// TODO:` to annotate solutions that need to be implemented. 
-  - Use `// XXX:` to annotate problems the need to be fixed. 
-  - It is best to write code that doesn't need `TODO` and `XXX` annotations, but sometimes it is unavoidable. 
+  - Use `// @todo:` to annotate solutions that need to be implemented. 
+  - Use `// @bug:` to annotate problems the need to be fixed. 
+  - It is best to write code that doesn't need `@todo` and `@bug` annotations, but sometimes it is unavoidable. 
 
 **[top](#table-of-contents)**
 
 ## Variable Declarations
-
   - All variables must be declared prior to using them. This aids in code readability and helps prevent undeclared variables from being hoisted onto the global scope. 
   
   ```typescript
@@ -247,9 +246,61 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
       return a + b + c;
   }
   ```
+  - It is preferred to use `let` instead of `var` wherever possible.  The `let` statement should be at the top
+of the deepest block to which it applies
+  ```
+  // bad
+  function loopThroughIfPositive(num: number, list: Array<any>) {
+    var i = 0,
+        length = list.length;
+    
+    if (a > 0) {
+      for (; i < length; i++) {
+        console.log(list[i]);
+      }
+    }
+  }
+  
+  
+  // bad
+  function loopThroughIfPositive(num: number, list: Array<any>) {
+    if (a > 0) {
+      for (var i = 0; i < list.length; i++) {
+        console.log(list[i]);
+      }
+    }
+  }
+  
+  
+  // good
+  function loopThroughIfPositive(num: number, list: Array<any>) {
+    if (a > 0) {
+      let i = 0,
+          length = list.length;
 
-  - Use one `var` keyword to define a block of variables.
-  - Declare each variable on a newline.
+      for (; i < length; i++) {
+        console.log(list[i]);
+      }
+    }
+  }
+  ```
+  
+  - Include a line break following each `var` or `let` statement
+  ```
+  // bad
+  var a = 5,
+      b = 2;
+  console.log('hi');
+  
+  // good
+  let a = 5,
+      b = 2;
+
+  console.log('hi');
+  ```
+  
+  - Use at most one `var` keyword at the top of each function (if necessary... `let` is preferred).
+  - Declare each variable on a newline unless the variable is not assigned.
   
   ```typescript
   // bad
@@ -260,7 +311,8 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
   // good
   var a = 2,
       b = 2,
-      c = 4;
+      c = 4,
+      d, e, f;
   
   // bad
   // b will be defined on global scope.
@@ -311,7 +363,7 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
   }
   ```
 
-  - The body of the function should be indented 4 spaces.
+  - The body of the function should be indented 2 spaces.
   - The right curly brace `}` should be on a new line.
   - The right curly brace `}` should be aligned with the line containing the left curly brace `{` that begins the function statement.
   
@@ -388,7 +440,7 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
   });
   ```
 
-  - The statement body should be indented 4 spaces.
+  - The statement body should be indented 2 spaces.
   - The right curly brace `}` should be on a new line.
   - The right curly brace `}` should be aligned with the line containing the  left curly brace `{` that begins the function statement.
 
@@ -408,10 +460,10 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
 
   - Types should be used whenever necessary.
   - Arrays should be defined as `Array<type>` instead of `type[]`.
-  - Use the `any` type sparingly, it is always better to define an interface.
-  - Always define the return type of functions.
-  - If TypeScript is capable of implicitly determining the return type of a function, then it is unnecessary to define the return type.
-  - Always define the types of variables/parameters unless TypeScript can implicitly infer their type.
+  - Use the `any` type sparingly, it is always better to define an interface.  Use tsd for third party libraries.
+If you are unable to find a type definition for a library, add a comment indicating why you are using any.
+  - Always define the return type of functions.  If the function doesn't return, use `void`
+  - Always define the types of variables/parameters.
   
   ```typescript
   // bad
@@ -428,7 +480,7 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
 
 ### Classes
 
-  - Classes/Constructors should use UpperCamelCase (PascalCase).
+  - Classes/Constructors should use prefixed by `Da` and be UpperCamelCase (PascalCase). `DaBlahClass`
   - `Private` and `private static` members in classes should be denoted with the `private` keyword.
   - `Private` and `private static` members should be prefaced with 2 underscores `__`.
   - `Protected` members in classes do not use the `private` keyword.
@@ -460,7 +512,9 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
 **[top](#table-of-contents)**
 
 ### Interfaces
-
+  - Interfaces should be written for third party libraries only when they are not currently on DefinitelyTyped
+    and the interface is used frequently in the code.  If possible submit the interface to the definitelyTyped
+    repo and submit a PR.
   - Interfaces should use UpperCamelCase.
   - Interfaces should be prefaced with the capital letter I.
   - Only `public` members should be in an interface, leave out `protected` and `private` members.
@@ -490,12 +544,12 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
   
   ```typescript
   // bad
-  var greeting = 'Hello World'
+  var greeting: string = 'Hello World'
 
   alert(greeting)
   
   // good
-  var greeting = 'Hello World';
+  var greeting: string = 'Hello World';
 
   alert(greeting);
   ```
@@ -507,7 +561,7 @@ JSDocs can be interpreted by IDEs for better intellisense. Below is an example o
 Compound statements are statements containing lists of statements enclosed in curly braces `{}`.
 
   - The enclosed statements should start on a newline.
-  - The enclosed statements should be indented 4 spaces.
+  - The enclosed statements should be indented 2 spaces.
 
   ```typescript
   // bad
@@ -560,13 +614,15 @@ If you do not add braces `{}` around compound statements, it makes it very easy 
   
 It appears the intention of the above code is to return if `condition === true`, but without braces `{}` the return statement will be executed regardless of the condition.
 
-  - Compount statements do not need to end in a semicolon `;` with the exception of a `do { } while();` statement.
+  - Compound statements should not end in a semicolon `;` with the exception of a `do { } while();` statement.
 
 **[top](#table-of-contents)**
 
 ### Return
 
   - If a `return` statement has a value you should not use parenthesis `()` around the value.
+  - There should be 1 blank line immediately preceeding the return statement unless the block containing
+return is itself only 1 line long
   - The return value expression must start on the same line as the `return` keyword.
   
   ```typescript
@@ -580,9 +636,7 @@ It appears the intention of the above code is to return if `condition === true`,
   // good
   return 'Hello World!';
   ```
-
-  - It is recommended to take a return-first approach whenever possible.
-  
+- A function which handles a single binary case should use a ternary wherever possible.
   ```typescript
   // bad
   function getHighestNumber(a: number, b: number): number {
@@ -595,13 +649,18 @@ It appears the intention of the above code is to return if `condition === true`,
       return out;
   }
   
-  // good
+  // bad
   function getHighestNumber(a: number, b: number): number {
       if(a >= b) {
           return a;
       }
 
       return b;
+  }
+  
+  // good
+  function getHighestNumber(a: number, b: number): number {
+      return a >= b ? a : b;
   }
   ```
 
